@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice | Nurse Portal</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #1a2b48; --teal: #2a9d8f; --bg: #f4f7f6; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); max-width: 500px; margin: auto; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; }
+        .btn { width: 100%; padding: 15px; border-radius: 10px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        #photo-preview { width: 100%; height: 200px; background: #eee; border-radius: 10px; object-fit: cover; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 style="color:var(--navy)">Add Medication</h2>
+    
+    <label>1. Take Photo of Medicine</label>
+    <input type="file" id="med-photo" accept="image/*" capture="camera">
+    <img id="photo-preview" src="" style="display:none">
+
+    <label>2. Medication Name</label>
+    <input type="text" id="med-name" placeholder="e.g. Heart Pill">
+
+    <label>3. Frequency</label>
+    <select id="med-freq">
+        <option value="daily">Every Day</option>
+        <option value="weekly">Once a Week</option>
+        <option value="monthly">Once a Month</option>
+    </select>
+
+    <label>4. Time</label>
+    <input type="time" id="med-time">
+
+    <label>5. Instructions</label>
+    <input type="text" id="med-note" placeholder="e.g. Take 1 pill after lunch">
+
+    <button class="btn" style="background:var(--navy); color:white" onclick="saveMed()">SAVE TO CLOUD & OFFLINE</button>
+    <button class="btn" style="background:var(--teal); color:white" onclick="window.location.href='patient.html'">GO TO PATIENT MODE</button>
+</div>
+
+<script>
+    // 1. YOUR FIREBASE CONFIG (Use the same one from BabyGuard)
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_ID",
+        appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Handle Photo Preview
+    document.getElementById('med-photo').onchange = function(e) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const img = document.getElementById('photo-preview');
+            img.src = reader.result;
+            img.style.display = "block";
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    };
+
+    async function saveMed() {
+        const name = document.getElementById('med-name').value;
+        const time = document.getElementById('med-time').value;
+        const freq = document.getElementById('med-freq').value;
+        const note = document.getElementById('med-note').value;
+        const photo = document.getElementById('photo-preview').src;
+
+        if(!name || !time || !photo) return alert("Please fill all fields and take a photo");
+
+        const medData = { name, time, freq, note, photo, lastTaken: "" };
+
+        // Save to Firebase
+        await db.collection("medications").add(medData);
+
+        // Save to LocalStorage (Offline Support)
+        let localMeds = JSON.parse(localStorage.getItem('meds') || "[]");
+        localMeds.push(medData);
+        localStorage.setItem('meds', JSON.stringify(localMeds));
+
+        alert("Medication Synced!");
+        location.reload();
+    }
+</script>
+</body>
+</html>
