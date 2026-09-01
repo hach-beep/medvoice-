@@ -2,123 +2,139 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedVoice | Simple Care</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MedVoice | Smart Adherence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --morning: #ffbe0b; --evening: #3a86ff; --danger: #ff006e; --bg: #f8f9fa; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; text-align: center; }
+        :root { --primary: #2d3436; --accent: #00b894; --warning: #d63031; --bg: #f9f9f9; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
         
-        .header { margin-bottom: 30px; }
-        .header h1 { font-size: 2.5rem; margin: 0; color: #2d3436; }
-        .header p { color: #636e72; font-weight: 600; }
+        /* View Management */
+        .view { display: none; max-width: 500px; margin: auto; animation: fadeIn 0.4s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .med-card {
-            background: white;
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 4px solid transparent;
+        /* Nurse UI */
+        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 2px solid #eee; font-size: 1rem; }
+        .btn { width: 100%; padding: 18px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-main { background: var(--primary); color: white; }
+        .btn-patient { background: var(--accent); color: white; margin-top: 20px; }
+
+        /* Patient UI */
+        .patient-btn { 
+            width: 250px; height: 250px; border-radius: 50%; border: 15px solid var(--accent);
+            background: white; font-size: 1.5rem; font-weight: 900; color: var(--accent);
+            box-shadow: 0 20px 50px rgba(0,184,148,0.2); cursor: pointer; margin: 40px auto;
+            display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px;
         }
-        .med-card:active { transform: scale(0.95); }
-        
-        .morning { border-color: var(--morning); }
-        .evening { border-color: var(--evening); }
-
-        .icon { font-size: 80px; margin-bottom: 10px; }
-        .label { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; }
-
-        /* Simple AI Assistant */
-        #ai-trigger {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2d3436;
-            color: white;
-            padding: 20px 40px;
-            border-radius: 50px;
-            font-weight: 800;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            cursor: pointer;
-        }
-
-        #ai-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.95);
-            z-index: 100;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 40px;
-        }
-        .ai-status { font-size: 1.2rem; color: var(--danger); font-weight: 800; margin-top: 20px; }
+        .patient-btn:active { transform: scale(0.9); }
+        .status-bar { font-weight: 700; color: #636e72; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>MedVoice</h1>
-    <p>Tap an icon to hear your instructions</p>
-</div>
+    <!-- VIEW 1: NURSE SETUP -->
+    <div id="nurse-view" class="view active">
+        <h1 style="font-weight: 900;">MedVoice <span style="color:var(--accent)">Pro</span></h1>
+        <p>Nurse/Pharmacist Setup Mode</p>
+        
+        <div class="card">
+            <label>Medication Name</label>
+            <input type="text" id="med-name" placeholder="e.g. Aspirin">
+            
+            <label>Time to Take</label>
+            <input type="time" id="med-time">
+            
+            <label>Instructions</label>
+            <select id="med-note">
+                <option value="Before eating">Before eating / قبل الاكل</option>
+                <option value="After eating">After eating / بعد الاكل</option>
+                <option value="Before sleep">Before sleep / قبل النوم</option>
+            </select>
+            
+            <button class="btn btn-main" onclick="saveMedication()">SET MEDICATION SCHEDULE</button>
+        </div>
+        
+        <button class="btn btn-patient" onclick="switchView('patient-view')">SWITCH TO PATIENT MODE</button>
+    </div>
 
-<div class="med-card morning" onclick="speak('Take one white pill for your heart with your breakfast.')">
-    <div class="icon">☀️</div>
-    <div class="label" style="color: var(--morning)">Morning / الصباح</div>
-</div>
-
-<div class="med-card evening" onclick="speak('Take two small pills for sleep before you go to bed.')">
-    <div class="icon">🌙</div>
-    <div class="label" style="color: var(--evening)">Evening / المساء</div>
-</div>
-
-<button id="ai-trigger" onclick="startAI()">🎙️ ASK AI ASSISTANT</button>
-
-<div id="ai-overlay">
-    <div style="font-size: 100px;">🤖</div>
-    <div id="ai-text" style="font-size: 1.5rem; font-weight: 700; margin-top: 20px;">Listening to your question...</div>
-    <div class="ai-status" id="ai-status">WAVEFORM ACTIVE</div>
-    <button onclick="stopAI()" style="margin-top: 40px; padding: 15px 30px; border-radius: 20px; border: none; background: #eee; font-weight: 700;">CLOSE</button>
-</div>
+    <!-- VIEW 2: PATIENT MODE -->
+    <div id="patient-view" class="view">
+        <div style="text-align: center; padding-top: 50px;">
+            <div class="status-bar" id="clock">00:00</div>
+            
+            <div class="patient-btn" onclick="askAI()">
+                TAP TO HEAR<br>INSTRUCTIONS<br>اضغط هنا
+            </div>
+            
+            <div id="reminder-text" style="font-size: 1.2rem; font-weight: 700; color: var(--warning);"></div>
+            
+            <button class="btn" style="margin-top: 50px; background: #eee;" onclick="switchView('nurse-view')">Exit Patient Mode</button>
+        </div>
+    </div>
 
 <script>
-    // 1. VOICE LOGIC (The "Accessibility" part)
+    let schedule = [];
+
+    function switchView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function saveMedication() {
+        const name = document.getElementById('med-name').value;
+        const time = document.getElementById('med-time').value;
+        const note = document.getElementById('med-note').value;
+
+        if(!name || !time) return alert("Please fill all fields");
+
+        schedule.push({ name, time, note, taken: false });
+        alert("Schedule Saved for " + name);
+        
+        // Clear form
+        document.getElementById('med-name').value = "";
+    }
+
     function speak(text) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9; // Slower for elderly
-        window.speechSynthesis.speak(utterance);
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.rate = 0.8; // Slow for elderly
+        window.speechSynthesis.speak(msg);
     }
 
-    // 2. AI LOGIC (The "Hackathon" part)
-    function startAI() {
-        document.getElementById('ai-overlay').style.display = 'flex';
-        // In a real app, we would use Web Speech API here.
-        // For the prototype, we simulate the AI "Thinking"
-        setTimeout(() => {
-            document.getElementById('ai-text').innerText = "AI Analysis: You asked about your blood pressure medicine. You should take it every morning at 8 AM.";
-            speak("You should take your blood pressure medicine every morning at 8 AM.");
-            document.getElementById('ai-status').innerText = "ADVICE GENERATED";
-            document.getElementById('ai-status').style.color = "#2a9d8f";
-        }, 2000);
+    // THE AI LOGIC: Checks time and answers patient
+    function askAI() {
+        const now = new Date();
+        const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        
+        let found = schedule.find(m => m.time === currentTime);
+        
+        if (found) {
+            const txt = `It is time for your ${found.name}. Please take it ${found.note}.`;
+            speak(txt);
+            document.getElementById('reminder-text').innerText = "TIME FOR: " + found.name;
+        } else {
+            const next = schedule[0]; // Simple logic for prototype
+            const txt = next ? `Your next medicine is ${next.name} at ${next.time}. You are safe for now.` : "You have no more medicine for today.";
+            speak(txt);
+            document.getElementById('reminder-text').innerText = "ALL CLEAR";
+        }
     }
 
-    function stopAI() {
-        document.getElementById('ai-overlay').style.display = 'none';
-        document.getElementById('ai-text').innerText = "Listening to your question...";
-        document.getElementById('ai-status').innerText = "WAVEFORM ACTIVE";
-        document.getElementById('ai-status').style.color = "var(--danger)";
-        window.speechSynthesis.cancel();
-    }
+    // Background Clock
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString();
+        
+        // Auto-Alert Logic
+        const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        schedule.forEach(m => {
+            if(m.time === currentTime && !m.alerted) {
+                speak(`Attention. It is time for your ${m.name}.`);
+                m.alerted = true; // Prevent repeating every second
+            }
+        });
+    }, 1000);
 </script>
-
 </body>
 </html>
