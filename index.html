@@ -61,7 +61,7 @@
         const status = document.getElementById('db-status');
         try {
             // REPLACE 'hach-beep' with your GitHub username
-            const response = await fetch('https://raw.githubusercontent.com/hach-beep/TriageAI-Humanity/main/study.txt');
+            const response = await fetch('https://raw.githubusercontent.com/hach-beep/TriageAI/main/study.txt');
             fullStudyText = await response.text();
             status.innerText = "RESEARCH SYNCED";
         } catch (e) {
