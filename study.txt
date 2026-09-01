@@ -1,0 +1,311 @@
+1.1 background 
+One of the most serious and sometimes fatal situations that arise in a 
+therapeutic setting is tension pneumothorax. Global emergency protocols 
+describe it as a form of obstructive shock that happens when air enters the 
+pleural space through a "one-way valve" mechanism, either from an open 
+chest wound or a lung puncture, but is unable to escape. (Bhangu and others, 
+2010). The gradual rise in intrapleural pressure causes complete lung collapse 
+and a "mediastinal shift." Venous return and cardiac output are severely 
+hampered by this shift, which compresses the heart and major veins (superior 
+and inferior vena cava) (World Health Organization, 2018). This illness 
+causes cardiovascular collapse and death if it is not treated within minutes.
+In emergency nursing, the ability to recognize tension pneumothorax 
+clinically is essential. Clinical literature provides evidence that the diagnosis 
+is more clinical than radiological. Severe respiratory distress, tachycardia, and 
+significant hypotension are important indicators that nurses need to recognize. 
+Examining the affected side physically usually reveals asymmetric chest wall 
+movement, hyper-resonance to percussion, and reduced or missing breath 
+sounds. Although tracheal displacement toward the unaffected side and 
+swollen neck veins (JVD) are characteristic symptoms, they are frequently 
+late and concerning indicators, thus nurses shouldn't wait for them to manifest 
+before starting emergency procedures.(Bhangu et al., 2010].In 2015), 
+(Tscheschlog and Jaunch).
+Although the WHO and other international organizations have defined 
+guidelines for addressing tension pneumothorax, the local hospital 
+environment has a significant impact on how these policies are applied. The 3
+emergency department during Kirkuk Hospital is the main trauma facility in 
+the area. It's critical to comprehend how the nursing staff at this facility 
+handles resources, follows management procedures, and makes quick 
+interventions. In order to provide the best possible life-saving treatment, this 
+study aims to close the gap between local nursing practices at Kirkuk Hospital 
+and international clinical standards.
+Additionally, the educational background of the nursing workforce has a 
+significant impact on the efficacy of nurse management. There are forty-five 
+nurses working in the emergency room at Kirkuk Hospital. Nonetheless, there 
+is a notable difference in educational attainment: 39 nurses (86.7%) are 
+graduates of secondary nursing schools or nursing institutes, but only six 
+nurses (13.3%) have a bachelor's degree in nursing. The bulk of the workforce 
+may not have the advanced academic and clinical training required for the 
+management of high-acuity cases like tension pneumothorax, which presents 
+a special obstacle in the application of advanced clinical protocols.
+This study fills up important gaps in Kirkuk Hospital's emergency care and 
+offers crucial information to the following stakeholders:
+1. For Patients
+This study attempts to expedite detection and response by identifying gaps in 
+nursing care for tension pneumothorax. Improving patient survival and 
+lowering mortality rates are directly correlated with shorter decompression 
+times.
+2. For Nursing Professionals
+By changing nurse responsibilities from passive to active, the research 
+encourages professional empowerment. It gives nurses a framework for 4
+defining their roles as life-saving professionals and boosting their clinical 
+confidence.
+3. For Policy Makers and Hospital Administration
+In order to support specialized training and the hiring of more competent 
+employees, the findings draw attention to staffing issues, particularly the 6/45 
+BSN ratio. When doctors are not present, nurses can help with or carry out 
+life-saving procedures thanks to the evidence it gives to update protocols.
+4.For Future Researchers
+This study addresses the dearth of local data on thoracic trauma as a basic 
+reference. It creates a baseline for upcoming studies on emergency nursing 
+interventions in Iraq.
+1.2 problem statement 
+The role of Nursing in the management of tension pneumothorax in the 
+Emergency Unit of Kirkuk Teaching Hospital
+1.3 the purpose of the study
+In general
+1. To evaluate nurses' involvement in tension pneumothorax treatment.
+Particular
+2. to determine the demographics of Kirkuk Hospital's nurse workforce.
+3. To determine the complication of tension pneumothorax .
+4. To determine how nurses' knowledge relates to sociodemographic traits as 
+age, gender, and study type. 5
+1.4 Research Question 
+1. What is the level of knowledge among nurses at Kirkuk Hospital 
+regarding the management of tension pneumothorax?
+2. What are the primary reasons (protocols, lack of training, or 
+perception) why nurses do not participate in these emergency 
+procedures?
+3. Is there a significant gap between the theoretical knowledge of 
+nurses and their actual clinical performance in the Emergency 
+Department?
+1.5 Definition of terms 
+Nurse : The nurse is a person who has completed a program of basic, 
+generalized nursing education and is authorized by the appropriate 
+regulatory authority to practice nursing in his/her country. Basic 
+nursing education is a formally recognised programme of study 
+providing a broad and sound foundation in the behavioural, life, and 
+nursing sciences for the general practice of nursing, for a leadership 
+role, and for post-basic education for specialty or advanced nursing 
+practice.( International council of Nurses 2010)
+Nurse management:- The clinical roles and interventions performed 
+by the nurse in the ED, including immediate airway clearance, 
+administration of 100% high-flow oxygen, preparation of 
+decompression materials, and monitoring for clinical improvement or 
+chest tube complications.(Tscheschlog and Jaunch ,2015)
+Tension pneumothorax:- A life-threatening condition where air enters 
+the pleural space during inspiration but cannot be expelled on 
+expiration, creating a "one-way valve" effect. This causes a 
+progressive build-up of pressure, lung collapse, and mediastinal 
+shift.(Bhangu et al . 2010). 6
+CHAPTER TWO 
+REVIEW OF 
+LITERATURE 7
+2.1 Introduction
+ Tension pneumothorax is defined as the accumulation of air under high 
+pressure within the pleural cavity. Air enters the pleural space and cannot 
+escape, leading to a gradual increase in pressure within the cavity. This 
+pressure compresses the lung, shifts the Mediastinum to the opposite side, and 
+impedes venous return, significantly reducing cardiac output. According to 
+the book “Fundamentals of Medical-Surgical Nursing” (2019), this condition 
+requires immediate intervention, beginning with needle aspiration in the 
+second intercostal space, followed by the final insertion of a chest tube.
+The role of nurses Is crucial in the early recognition of this condition through 
+continuous monitoring of vital signs and respiratory status. Nurses must focus 
+on detecting early indicators, such as tachycardia and hypotension, to ensure 
+the medical team is immediately notified before late complications arise. It is 
+important to emphasize that delayed recognition of tracheal displacement can 
+have serious consequences, as it is a very late clinical sign indicating a severe 
+decline in lung function and an imminent threat of cardiovascular collapse.
+2.2 Definition of Pneumothorax and Tension Pneumothorax 
+Tension pneumothorax occurs due to the disruption of the parietal, visceral, 
+or mediastinal pleura. Lewis et al. (2019) describe it as a “one-way flap valve”
+mechanism leading to air entrapment. 8
+ Figure2.1:Adapted from Medical Education Archives (2024).
+2.3 Pathophysiology of Tension Pneumothorax
+The pleural cavity is normally airless and maintains a slightly negative 
+pressure, which facilitates close contact between the pleural layers and allows 
+for smooth lung movement during respiration. Tension pneumothorax occurs 
+when a one-way valve mechanism is created—whether from an underlying 
+lung injury or a chest wall wound—allowing air to enter the pleural space 
+during inspiration but preventing its escape during expiration (Hinkle & 
+Cheever, 2021).
+This continuous, rapid accumulation of air transforms the normal negative 
+pressure into progressive positive pressure, which separates the pleural layers 
+and leads to:
+Lung Collapse: Total compression of the affected lung, resulting in an acute 
+ventilation-perfusion mismatch and failure of gas exchange (Hypoxia) (West 
+& Luks, 2020). 9
+Mediastinal Shift: The mounting intrapleural pressure pushes the mediastinal 
+structures (heart, trachea, and major vessels) toward the unaffected side. This 
+shift is often clinically manifested by tracheal deviation and distended neck 
+veins (Porcel, 2023).
+ Hemodynamic Collapse: The mediastinal shift causes significant 
+compression of the Vena Cava, severely reducing venous return to the heart. 
+This leads to a critical drop in cardiac output and the onset of Obstructive 
+Shock, a life-threatening condition that demands immediate recognition by 
+the emergency nursing staff and rapid medical intervention (McKnight & 
+Burns, 2023).
+2.4 Etiology and Risk Factors of Tension Pneumothorax
+ Tension pneumothorax arises when air is trapped in the pleural space under 
+pressure. Its causes are categorized into three main origins:
+2.4.1 Etiology
+ Traumatic: The leading cause, resulting from penetrating wounds (e.g., 
+stabbings) or blunt trauma (e.g., rib fractures from car accidents) that tear the 
+lung tissue (Kasten et al., 2022).
+ Iatrogenic: Occurs during medical interventions, such as central line 
+insertion, lung biopsies, or high-pressure mechanical ventilation (PEEP) 
+(Zarogoulidis et al., 2024).
+ Spontaneous: Occurs if a simple pneumothorax (primary or secondary) 
+develops a one-way valve mechanism, though this is less common.
+2.4.2 Risk Factors
+ Mechanical Ventilation: High airway pressures can rupture fragile alveoli, 
+especially in ARDS patients. 10
+ Chronic Lung Disease: Conditions like COPD, Cystic Fibrosis, and Asthma 
+weaken the lung structure (Hinkle & Cheever, 2021).
+ Smoking: Increases the formation of subpleural blebs, which are prone to 
+rupture. Barotrauma: Rapid pressure changes (e.g., in scuba diving or flying) 
+can trigger a collapse (cKnight & Burns, 2023).
+2.5Clinical Presentation of Tension Pneumothorax: 
+2.5.1 In Patients with Spontaneous Breathing (Awake)
+ In the emergency department, the nurse should monitor for a progression 
+of symptoms. Initial signs are often respiratory, while late signs indicate 
+hemodynamic failure:
+ Early signs: Acute onset of shortness of breath (dyspnea), pleuritic chest 
+pain, tachypnea, tachycardia, and decreased blood oxygen saturation (SpO2) 
+(Brodie & Slutsky, 2011).
+ Late (critical) signs: Hypotension (obstructive shock), bradycardia, and 
+progressing to cardiac arrest, typically presenting as Pulseless Electrical 
+Activity (PEA) (MacDuff et al., 2010).
+2.5.2 In Patients on Mechanical Ventilation
+ The emergency nurse must maintain high clinical suspicion for TP in 
+ventilated patients, as the positive pressure can accelerate lung collapse:
+ Sudden and significant drop in oxygen saturation (hypoxia).
+ A sudden, rapid increase in peak airway pressure (PIP) on the ventilator 
+monitor.
+ Rapid hemodynamic collapse, characterized by severe hypotension and 
+diminished cardiac output (Roberts et al., 2019).
+2.5.3 Physical Examination Findings
+ The emergency nursing assessment should focus on the classic triad of 
+signs, although they may not all be present simultaneously: 11
+Visual Inspection: Asymmetric chest expansion, enlargement, and rigidity on 
+the affected side with reduced respiratory movement. Tracheal deviation to 
+the contralateral side is a classic but often late sign (ACS, 2018).
+Percussion: Hyperresonance (tympanic sound) over the affected side due to 
+trapped air.
+Auscultation: Absence or significantly diminished breath sounds on the 
+affected side (Brodie & Slutsky, 2011).
+2.6 Comprehensive Nursing Care Management
+ The nursing management of tension pneumothorax is a multi-phase 
+process that transitions from life-saving emergency intervention to long-term 
+rehabilitative care and education.
+2.6.1 Emergency Assessment and Stabilization
+ Rapid Clinical Recognition: The nurse must immediately identify the 
+“classic triad”: increasing respiratory distress, hypotension, and unilateral 
+absence of breath sounds. Positioning: Place the patient in a High-Fowler’s 
+position (if hemodynamically stable) to maximize lung expansion and ease 
+the work of breathing.
+Oxygenation: Administer high-flow oxygen. This not only treats hypoxia 
+but also creates a diffusion gradient that accelerates the reabsorption of 
+nitrogen from the pleural space (Hinkle & Cheever, 2021).
+2.6.2 Assistance with Invasive Procedures
+ Needle Decompression Support: Assist the physician in performing 
+emergent needle thoracostomy. The nurse is responsible for preparing the 
+site with a focus on the 5th intercostal space (anterior to the mid-axillary 
+line) as per updated ATLS guidelines, or the 2nd intercostal space (mid 12
+clavicular line)and monitoring the patient’s immediate hemodynamic 
+response (e.g., rise in blood pressure) after the air hiss is heard.
+Chest Tube Thoracostomy: Prepare the sterile field for chest tube insertion. 
+The nurse must ensure the Water Seal Drainage system is primed with sterile 
+water to the correct level (usually 2cm) before connection (Lewis et al., 
+2023).
+2.6.3 Maintenance of the Drainage System
+ System Integrity: Ensure all connections are taped and secure. The 
+drainage unit must always remain upright and below the level of the chest to 
+prevent the backflow of fluid or air into the pleural space.
+ Monitoring “Tidaling” and “Bubbling”: Tidaling: The nurse observes the 
+fluid level rise and fall with respiration. Its absence indicates either lung re-
+expansion or a kink in the tubing.
+Bubbling: Intermittent bubbling is normal during expiration in a 
+pneumothorax patient; however, continuous bubbling in the water-seal 
+chamber indicates an external air leak in the system (Baumann et al., 2020).
+2.6.4 Post-Procedural Clinical Care
+ Respiratory Hygiene: Implement a schedule for coughing and deep 
+breathing exercises every 1–2 hours. Use an Incentive Spirometer to 
+encourage sustained maximal inspiration, which is vital for re-inflating 
+collapsed alveoli (McKnight & Burns, 2023).
+Subcutaneous Emphysema Monitoring: Frequently palpate the neck and 
+chest for “crepitus” (a crackling sensation under the skin). A rapid increase 
+in this sensation must be reported as it suggests the chest tube is 
+malpositioned or blocked. 13
+Pain Management: Adequate analgesia is not just for comfort; it is a clinical 
+necessity. Without it, the patient will “splint” their breathing (taking shallow 
+breaths), which increases the risk of atelectasis and pneumonia.
+2.6.5 Patient Education and Discharge Planning
+ Educate the patient on the signs of recurrence (sudden chest pain or 
+shortness of breath). Advise against air travel or SCUBA diving for a period 
+(typically several weeks to months) until cleared by a pulmonologist, as 
+pressure changes can trigger a recurrence (Hinkle & Cheever, 2021).
+Figure2.2:Steps of chest tube insertion within the safe triangle. Adapted from 
+the British Thoracic Society (BTS) guidelines on pleural procedures 
+(Havelock et al., 2010).
+2.7 Essential Equipment and Clinical Specifications
+ The management of tension pneumothorax requires immediate access to 
+specific medical sets. Nurses must ensure the readiness and correct sizing of 
+the following equipment:
+1. Needle Decompression Set:
+ Catheter Size: Large-bore needles, typically 14 to 16 gauge, are required. 14
+ Catheter Length: A length of at least 8 cm is recommended to ensure it 
+reaches the pleural space through the chest wall, especially in patients with 
+high BMI (ATLS, 2018).Clinical Protocol: Ensure readiness for 
+decompression at the 5th intercostal space, which is the currently preferred site 
+in modern trauma protocols to reduce failure rates.
+2. Chest Tube (Thoracostomy) System:
+Tube Size: For adults, large-bore chest tubes (28 to 32 French) are typically 
+used to drain both air and potential blood (hemothorax).
+ Drainage Unit: A three-chamber water-seal suction system (like Pleur-evac) 
+is standard. Nurses must monitor the water seal level to maintain negative 
+pressure.
+3. Skin Preparation and Fixation:
+ Antiseptics: Povidone-iodine or Chlorhexidine for site sterilization.
+ Sutures: Non-absorbable silk sutures (e.g., 0 or 1-0) to secure the tube in 
+place.
+ Occlusive Dressing: Petroleum gauze (Vaseline gauze) is essential to create 
+an airtight seal around the insertion site to prevent air re-entry.
+4. Emergency Monitoring Tools: Continuous Pulse Oximetry (SpO_2) and 
+automated blood pressure monitors are critical for the immediate assessment 
+of the patient’s hemodynamic response after decompression.
+2.8 Challenges in Local Emergency Settings (Kirkuk Hospitals)
+ The nursing management of tension pneumothorax in Kirkuk’s teaching 
+hospitals faces several practical challenges:
+High Trauma Load: The constant influx of road traffic accidents in the 
+emergency department (ED) often leads to overcrowding, which may delay 
+the rapid triage and recognition of life-threatening symptoms. 15
+Resource Limitations: While basic tools are available, the intermittent supply 
+of modern drainage systems or varied catheter sizes requires nurses to adapt 
+quickly under high-pressure conditions.
+ Protocol Updates: A “knowledge-practice gap” exists where some staff may 
+still follow older guidelines, highlighting the need for continuous training on 
+recent updates like the 5th intercostal space approach (ATLS 10th Ed).
+ Communication Barriers: In fast-paced trauma units, the lack of standardized 
+tools like SBAR can lead to delays in transmitting critical patient data to the 
+surgical team.
+ Workload vs. Training: The heavy clinical workload often limits nurses’ 
+ability to attend specialized advanced life support (ALS) courses to maintain 
+peak competency.
+2.9 Previous Studies
+ The literature defines tension pneumothorax as a critical emergency caused 
+by a ‘one-way flap valve’ mechanism that traps air, leading to rapid lung 
+collapse and hemodynamic instability. Studies by West & Luks (2020) and 
+McKnight & Burns (2023) emphasize that this condition triggers acute 
+hypoxia and obstructive shock due to Vena Cava compression and mediastinal 
+shift. Nursing guidelines prioritize the early recognition of the ‘classic triad’ 
+(respiratory distress, hypotension, and absent breath sounds) to prevent late 
+complications like tracheal deviation. Evidence-based interventions involve 
+immediate needle decompression (14-16 gauge) followed by chest tube 
+thoracostomy within the ‘safe triangle’ to restore negative pressure. However, 
+local research in Kirkuk hospitals highlights a ‘knowledge-practice gap’ 
+regarding updated protocols, such as the 5th intercostal space approach, 
+alongside resource limitations that may delay life-saving triage. 16
+CHAPTER THREE
+METHO
