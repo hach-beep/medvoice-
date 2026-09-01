@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice | Patient Mode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; overflow: hidden; }
+        #waiting-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        #alert-screen { display: none; height: 100vh; background: white; color: #000; padding: 20px; text-align: center; }
+        #med-img { width: 100%; max-height: 50vh; border-radius: 20px; object-fit: contain; }
+        .stop-btn { background: #d63031; color: white; padding: 30px; border-radius: 20px; width: 100%; font-size: 2rem; border: none; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="waiting-screen">
+        <div style="font-size: 5rem;">🌙</div>
+        <h1>MedVoice is Active</h1>
+        <p>I will speak when it is time for your medicine.</p>
+        <button onclick="startMonitoring()" id="start-btn" style="padding:20px; border-radius:50px; border:none; background:#2a9d8f; color:white; font-weight:800;">TAP TO START MONITORING</button>
+    </div>
+
+    <div id="alert-screen">
+        <h1 id="alert-title" style="font-size: 2.5rem; margin: 10px 0;">TIME FOR MEDICINE!</h1>
+        <img id="med-img" src="">
+        <h2 id="alert-note"></h2>
+        <button class="stop-btn" onclick="stopAlert()">I TOOK IT / تم الأخذ</button>
+    </div>
+
+<script>
+    let meds = JSON.parse(localStorage.getItem('meds') || "[]");
+    let alertInterval;
+
+    function startMonitoring() {
+        document.getElementById('start-btn').style.display = "none";
+        document.getElementById('waiting-screen').innerHTML += "<h3>Monitoring...</h3>";
+        // Permission for voice
+        speak("System active. I will remind you.");
+        
+        setInterval(checkTime, 10000); // Check every 10 seconds
+    }
+
+    function checkTime() {
+        const now = new Date();
+        const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        
+        meds.forEach(m => {
+            if(m.time === currentTime && !m.isAlerting) {
+                triggerAlert(m);
+            }
+        });
+    }
+
+    function triggerAlert(med) {
+        med.isAlerting = true;
+        const screen = document.getElementById('alert-screen');
+        document.getElementById('med-img').src = med.photo;
+        document.getElementById('alert-note').innerText = med.note;
+        screen.style.display = "block";
+
+        // Voice Loop
+        alertInterval = setInterval(() => {
+            speak(`Attention. It is time for your ${med.name}. ${med.note}.`);
+        }, 5000);
+    }
+
+    function stopAlert() {
+        clearInterval(alertInterval);
+        window.speechSynthesis.cancel();
+        document.getElementById('alert-screen').style.display = "none";
+        // Log to history (In a real app, update Firebase here)
+        alert("Dose recorded at " + new Date().toLocaleTimeString());
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.rate = 0.7;
+        window.speechSynthesis.speak(msg);
+    }
+</script>
+</body>
+</html>
