@@ -3,368 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TriageAI | Emergency Respiratory Suite</title>
-    <!-- Google Fonts & Icons -->
+    <title>TriageAI | Full-Text Research Agent</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    
     <style>
-        :root {
-            --primary-navy: #1a2b48;
-            --emergency-red: #d90429;
-            --warning-orange: #f77f00;
-            --success-green: #2a9d8f;
-            --bg-light: #f8f9fa;
-            --text-main: #2d3436;
-            --glass: rgba(255, 255, 255, 0.9);
-        }
-
+        :root { --navy: #1a2b48; --red: #d90429; --teal: #2a9d8f; --light: #f8f9fa; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-light); 
-            color: var(--text-main);
-            margin: 0;
-            padding-bottom: 80px; /* Space for AI bar */
-        }
-
-        /* Header */
-        header {
-            background: var(--primary-navy);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .logo-area h1 { margin: 0; font-size: 1.5rem; letter-spacing: -1px; }
-        .logo-area span { font-size: 0.7rem; opacity: 0.8; text-transform: uppercase; }
-
-        /* Dashboard Grid */
-        .container { padding: 15px; max-width: 1000px; margin: auto; }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #edf2f7;
-        }
-
-        .card-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-navy);
-        }
-
-        /* Assessment Form */
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: #636e72; }
-        
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid #eee;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        select:focus { border-color: var(--primary-navy); }
-
-        /* Triage Button */
-        .btn-triage {
-            background: var(--primary-navy);
-            color: white;
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.1s;
-        }
-        .btn-triage:active { transform: scale(0.98); }
-
-        /* Result Overlay */
-        #result-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .result-card {
-            background: white;
-            width: 100%;
-            max-width: 500px;
-            border-radius: 24px;
-            padding: 30px;
-            text-align: center;
-            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        .status-icon { font-size: 60px; margin-bottom: 15px; }
-        .critical { color: var(--emergency-red); }
-        .stable { color: var(--success-green); }
-
-        /* AI Assistant Floating */
-        #ai-trigger {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-navy);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 3000;
-        }
-
-        #ai-chat {
-            display: none;
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 350px;
-            height: 450px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 3000;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid #eee;
-        }
-
-        .chat-header { background: var(--primary-navy); color: white; padding: 15px; font-weight: 600; display: flex; justify-content: space-between; }
-        .chat-body { flex-grow: 1; padding: 15px; overflow-y: auto; background: #fdfdfd; font-size: 0.9rem; }
+        body { font-family: 'Inter', sans-serif; background: var(--light); color: #2d3436; margin: 0; padding-bottom: 100px; }
+        header { background: var(--navy); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 15px; max-width: 800px; margin: auto; }
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .btn-run { background: var(--navy); color: white; width: 100%; padding: 18px; border: none; border-radius: 15px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+        #ai-window { display: none; position: fixed; bottom: 100px; right: 20px; width: 350px; height: 550px; background: white; border-radius: 25px; box-shadow: 0 15px 50px rgba(0,0,0,0.2); z-index: 3000; flex-direction: column; overflow: hidden; border: 1px solid #eee; }
+        .chat-header { background: var(--navy); color: white; padding: 15px; display: flex; justify-content: space-between; }
+        .chat-body { flex-grow: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; font-size: 0.85rem; }
         .chat-input { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
-        
-        .msg { margin-bottom: 10px; padding: 10px; border-radius: 12px; max-width: 85%; }
-        .msg-ai { background: #f1f2f6; color: var(--text-main); align-self: flex-start; }
-        .msg-user { background: var(--primary-navy); color: white; align-self: flex-end; margin-left: auto; }
-
-        /* Research Badge */
-        .badge {
-            background: #e1f5fe;
-            color: #0288d1;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 600px) {
-            #ai-chat { width: calc(100% - 40px); left: 20px; }
-        }
+        .msg { margin-bottom: 10px; padding: 12px; border-radius: 15px; line-height: 1.4; }
+        .msg-ai { background: white; border: 1px solid #eee; align-self: flex-start; }
+        .msg-user { background: var(--navy); color: white; align-self: flex-end; margin-left: 20%; }
+        #ai-fab { position: fixed; bottom: 25px; right: 25px; background: var(--navy); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 8px 25px rgba(0,0,0,0.3); cursor: pointer; z-index: 4000; }
+        .loading-dots { font-style: italic; color: var(--teal); font-size: 0.7rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-area">
-        <h1>TriageAI</h1>
-        <span>Respiratory Emergency Suite</span>
-    </div>
-    <div class="badge">Evidence-Based: Kirkuk Study</div>
+    <div class="logo"><h1>TriageAI</h1><span>Full-Text Research Edition</span></div>
+    <div id="db-status" style="font-size: 0.6rem; background: #2a9d8f; padding: 4px 8px; border-radius: 5px;">RESEARCH LOADED</div>
 </header>
 
 <div class="container">
-    <!-- Quick OSCE Checklist -->
     <div class="card">
-        <div class="card-title">
-            <span class="material-icons-round">fact_check</span>
-            Primary Survey (OSCE Protocol)
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.8rem;">
-            <div style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" style="width: 15px;"> Airway/C-Spine</div>
-            <div style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" style="width: 15px;"> Chest Expansion</div>
-            <div style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" style="width: 15px;"> Percussion</div>
-            <div style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" style="width: 15px;"> Auscultation</div>
-        </div>
-    </div>
-
-    <!-- Assessment Form -->
-    <div class="card">
-        <div class="card-title">
-            <span class="material-icons-round">analytics</span>
-            Clinical Assessment
-        </div>
-        
-        <div class="input-group">
-            <label>Respiratory Status</label>
-            <select id="resp-status">
-                <option value="normal">Normal Breathing</option>
-                <option value="distress">Severe Distress / Tachypnea</option>
-                <option value="arrest">Respiratory Arrest</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Breath Sounds (Affected Side)</label>
-            <select id="breath-sounds">
-                <option value="present">Present & Equal</option>
-                <option value="diminished">Diminished</option>
-                <option value="absent">Absent / Silent Chest</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Hemodynamics (BP/Pulse)</label>
-            <select id="hemo-status">
-                <option value="stable">Stable</option>
-                <option value="shock">Hypotension / Tachycardia (Shock)</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Tracheal Position / Neck Veins</label>
-            <select id="tracheal-status">
-                <option value="midline">Midline / Normal Veins</option>
-                <option value="deviated">Deviated / JVD (Late Sign)</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>Ventilator Status (If applicable)</label>
-            <select id="vent-status">
-                <option value="na">Not Ventilated</option>
-                <option value="normal">Normal Pressures</option>
-                <option value="high-pip">Sudden Increase in PIP</option>
-            </select>
-        </div>
-
-        <button class="btn-triage" onclick="runTriage()">
-            <span class="material-icons-round">bolt</span>
-            RUN EMERGENCY ANALYSIS
-        </button>
+        <h3 style="margin-top:0">Emergency Triage</h3>
+        <p style="font-size:0.8rem; color:#666">Use the AI Agent below to query the full Kirkuk study text.</p>
+        <button class="btn-run" onclick="toggleChat()">OPEN RESEARCH AGENT</button>
     </div>
 </div>
 
-<!-- Result Overlay -->
-<div id="result-overlay">
-    <div class="result-card" id="result-content">
-        <!-- Content injected by JS -->
-    </div>
-</div>
+<div id="ai-fab" onclick="toggleChat()"><span class="material-icons-round" style="font-size:30px">psychology</span></div>
 
-<!-- AI Assistant -->
-<div id="ai-trigger" onclick="toggleChat()">
-    <span class="material-icons-round">psychology</span>
-</div>
-
-<div id="ai-chat">
-    <div class="chat-header">
-        <span>Protocol AI Assistant</span>
-        <span class="material-icons-round" style="cursor:pointer" onclick="toggleChat()">close</span>
-    </div>
-    <div class="chat-body" id="chat-history">
-        <div class="msg msg-ai">Hello Nurse. I am trained on the Kirkuk Teaching Hospital Tension Pneumothorax study. How can I assist with the protocol?</div>
+<div id="ai-window">
+    <div class="chat-header"><span>TriageAI Research Agent</span><span class="material-icons-round" onclick="toggleChat()" style="cursor:pointer">close</span></div>
+    <div class="chat-body" id="chat-hist">
+        <div class="msg msg-ai">I have scanned your full research paper. Ask me any specific question about the findings, protocols, or data from the Kirkuk study.</div>
     </div>
     <div class="chat-input">
-        <input type="text" id="user-query" placeholder="Ask about landmarks...">
-        <button onclick="askAI()" style="background:none; border:none; color:var(--primary-navy); cursor:pointer;">
-            <span class="material-icons-round">send</span>
-        </button>
+        <input type="text" id="query" placeholder="Search the full study...">
+        <button onclick="askAI()" style="background:none; border:none; color:var(--navy); cursor:pointer;"><span class="material-icons-round">send</span></button>
     </div>
 </div>
 
 <script>
-    function runTriage() {
-        const resp = document.getElementById('resp-status').value;
-        const breath = document.getElementById('breath-sounds').value;
-        const hemo = document.getElementById('hemo-status').value;
-        const trachea = document.getElementById('tracheal-status').value;
-        const vent = document.getElementById('vent-status').value;
+    let fullStudyText = "";
 
-        const overlay = document.getElementById('result-overlay');
-        const content = document.getElementById('result-content');
-        overlay.style.display = 'flex';
-
-        // Logic based on Research Paper
-        if (breath === 'absent' && (hemo === 'shock' || resp === 'distress' || vent === 'high-pip')) {
-            content.innerHTML = `
-                <span class="material-icons-round status-icon critical">report_problem</span>
-                <h2 class="critical">SUSPECTED TENSION PNEUMOTHORAX</h2>
-                <p><strong>Immediate Action Required:</strong></p>
-                <ul style="text-align:left; font-size:0.9rem;">
-                    <li>Notify Trauma Team / Surgeon Immediately.</li>
-                    <li>Prepare for <strong>Needle Decompression</strong>.</li>
-                    <li>Landmark: <strong>5th Intercostal Space</strong> (Anterior Axillary Line).</li>
-                    <li>Administer 100% High-Flow Oxygen.</li>
-                </ul>
-                <button class="btn-triage" onclick="closeResult()" style="margin-top:20px; background:#eee; color:#333;">Back to Assessment</button>
-            `;
-        } else {
-            content.innerHTML = `
-                <span class="material-icons-round status-icon stable">check_circle</span>
-                <h2 class="stable">STABLE / MONITOR</h2>
-                <p>Clinical signs do not currently meet the triad for Tension Pneumothorax. Continue serial assessments every 15 minutes.</p>
-                <button class="btn-triage" onclick="closeResult()" style="margin-top:20px; background:#eee; color:#333;">Back to Assessment</button>
-            `;
+    // 1. FETCH THE FULL STUDY FROM GITHUB
+    async function loadStudy() {
+        const status = document.getElementById('db-status');
+        try {
+            // REPLACE 'hach-beep' with your GitHub username
+            const response = await fetch('https://raw.githubusercontent.com/hach-beep/TriageAI-Humanity/main/study.txt');
+            fullStudyText = await response.text();
+            status.innerText = "RESEARCH SYNCED";
+        } catch (e) {
+            status.innerText = "OFFLINE MODE";
+            status.style.background = "#d90429";
         }
     }
-
-    function closeResult() {
-        document.getElementById('result-overlay').style.display = 'none';
-    }
+    loadStudy();
 
     function toggleChat() {
-        const chat = document.getElementById('ai-chat');
-        chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+        const w = document.getElementById('ai-window');
+        w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
     }
 
     function askAI() {
-        const input = document.getElementById('user-query');
-        const history = document.getElementById('chat-history');
-        const query = input.value.toLowerCase();
+        const qInput = document.getElementById('query');
+        const h = document.getElementById('chat-hist');
+        const query = qInput.value.trim();
         if(!query) return;
 
-        history.innerHTML += `<div class="msg msg-user">${input.value}</div>`;
+        h.innerHTML += `<div class="msg msg-user">${query}</div>`;
+        qInput.value = "";
         
-        let response = "I recommend consulting the senior surgeon. However, based on the Kirkuk study, ensure the patient is in High-Fowler's position and monitor for subcutaneous emphysema (crepitus).";
-
-        if(query.includes("landmark") || query.includes("where")) {
-            response = "Per updated ATLS and the Kirkuk study, the preferred site is the 5th Intercostal Space, anterior to the mid-axillary line. The 2nd ICS mid-clavicular is the alternative.";
-        } else if(query.includes("needle")) {
-            response = "Use a large-bore catheter (14-16 Gauge). For obese patients, ensure a length of at least 8cm to reach the pleural space.";
-        } else if(query.includes("tube")) {
-            response = "Prepare a 28-32 French chest tube. Ensure the water seal is maintained at 2cm and monitor for intermittent bubbling.";
-        }
+        // Show loading
+        const loadingId = "load-" + Date.now();
+        h.innerHTML += `<div id="${loadingId}" class="loading-dots">Scanning full study text...</div>`;
+        h.scrollTop = h.scrollHeight;
 
         setTimeout(() => {
-            history.innerHTML += `<div class="msg msg-ai">${response}</div>`;
-            history.scrollTop = history.scrollHeight;
-        }, 600);
-        input.value = "";
+            document.getElementById(loadingId).remove();
+            const answer = performSemanticSearch(query);
+            h.innerHTML += `<div class="msg msg-ai"><strong>According to the study:</strong><br><br>${answer}</div>`;
+            h.scrollTop = h.scrollHeight;
+        }, 800);
+    }
+
+    // 2. THE SEARCH ALGORITHM (Scans the whole text)
+    function performSemanticSearch(query) {
+        if (!fullStudyText) return "The study is still loading. Please try again in a second.";
+
+        const paragraphs = fullStudyText.split('\n').filter(p => p.length > 40);
+        const words = query.toLowerCase().split(' ').filter(w => w.length > 3);
+        
+        let bestParagraph = "";
+        let highestScore = 0;
+
+        paragraphs.forEach(p => {
+            let score = 0;
+            words.forEach(w => {
+                if (p.toLowerCase().includes(w)) score++;
+            });
+            if (score > highestScore) {
+                highestScore = score;
+                bestParagraph = p;
+            }
+        });
+
+        return bestParagraph || "I couldn't find a specific match in the text. Try asking about 'needle size', '5th intercostal', or 'nurse training'.";
     }
 </script>
-
 </body>
 </html>
