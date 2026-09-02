@@ -40,6 +40,9 @@
         <div style="font-size: 6rem; margin-bottom: 20px;">🎙️</div>
         <h1>MedVoice Active</h1>
         <p id="status-text">Tap the button below to start monitoring.</p>
+        <button onclick="openFile()" style="margin-top:20px; background:none; border:1px solid white; color:white; padding:10px 20px; border-radius:50px; cursor:pointer;">
+    VIEW MY MEDICATIONS / عرض الأدوية
+        </button>
         <button onclick="start()" id="start-btn" style="padding:20px 40px; border-radius:50px; border:none; background:#2a9d8f; color:white; font-weight:800; font-size: 1.2rem;">START MONITORING</button>
     </div>
 
@@ -130,6 +133,7 @@
     document.getElementById('patient-file').style.display = 'block';
     renderMedList();
 }
+    }
 
 function closeFile() {
     document.getElementById('patient-file').style.display = 'none';
@@ -158,7 +162,7 @@ function renderMedList() {
             </div>
         `;
     });
-}
+
 
 async function deleteMed(index) {
     if(confirm("Are you sure you want to remove this medication from the file?")) {
