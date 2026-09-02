@@ -133,7 +133,12 @@
     document.getElementById('patient-file').style.display = 'block';
     renderMedList();
 }
-    }
+    
+function openFile() {
+    document.getElementById('waiting').style.display = 'none';
+    document.getElementById('patient-file').style.display = 'block';
+    renderMedList();
+}
 
 function closeFile() {
     document.getElementById('patient-file').style.display = 'none';
@@ -159,10 +164,10 @@ function renderMedList() {
                     <p><strong>Note:</strong> ${m.note}</p>
                 </div>
                 <button class="delete-btn" onclick="deleteMed('${index}')">🗑️</button>
-            </div> 
-    }
-
-
+            </div>
+        `;
+    });
+}
 async function deleteMed(index) {
     if(confirm("Are you sure you want to remove this medication from the file?")) {
         // 1. Remove from local array
