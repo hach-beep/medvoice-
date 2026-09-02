@@ -31,10 +31,26 @@
 
     <label>3. Time to Take</label>
     <input type="time" id="med-time">
-    <label>Dose Label</label>
+    <label>4. Select Days (Every Week)</label>
+<div id="day-picker" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0;">
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="0"> Sun</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="1"> Mon</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="2"> Tue</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="3"> Wed</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="4"> Thu</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="5"> Fri</label>
+    <label style="font-size: 0.7rem;"><input type="checkbox" class="day-check" value="6"> Sat</label>
+</div>
+
+<label>5. Duration</label>
+<div style="display: flex; gap: 10px;">
+    <input type="date" id="start-date" placeholder="Start">
+    <input type="date" id="end-date" placeholder="End">
+</div>
+    <label>6. Dose Label</label>
 <input type="text" id="med-label" placeholder="e.g. Morning Dose / جرعة الصباح">
 
-    <label>4. Instructions</label>
+    <label>7. Instructions</label>
     <input type="text" id="med-note" placeholder="e.g. Take 1 pill after breakfast">
 
     <button class="btn" style="background:var(--navy); color:white" onclick="saveMed()">SAVE TO CLOUD</button>
@@ -81,27 +97,38 @@
         };
     });
     }
+ async function saveMed() {
+    const name = document.getElementById('med-name').value;
+    const time = document.getElementById('med-time').value;
+    const note = document.getElementById('med-note').value;
+    const photo = document.getElementById('photo-preview').src;
+    const start = document.getElementById('start-date').value;
+    const end = document.getElementById('end-date').value;
 
-    async function saveMed() {
-        const name = document.getElementById('med-name').value;
-        const time = document.getElementById('med-time').value;
-        const label = document.getElementById('med-label').value;
-        const note = document.getElementById('med-note').value;
-        const rawPhoto = document.getElementById('photo-preview').src;
-const photo = await compressImage(rawPhoto);
-        if(!name || !time || !photo) return alert("Please fill all fields and take a photo");
+    // Collect selected days (e.g., [0, 2, 4] for Sun, Tue, Thu)
+    const selectedDays = [];
+    document.querySelectorAll('.day-check:checked').forEach(cb => {
+        selectedDays.push(parseInt(cb.value));
+    });
 
-        try {
-            await db.collection("meds").add({
-                name, time, note, photo,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            alert("Medication Synced Successfully!");
-            location.reload();
-        } catch (e) {
-            alert("Error: " + e.message);
-        }
+    if(!name || !time || selectedDays.length === 0) {
+        return alert("Please enter name, time, and at least one day.");
     }
+
+    try {
+        await db.collection("meds").add({
+            name, time, note, photo,
+            days: selectedDays, // Array of days
+            startDate: start,
+            endDate: end,
+            isAlerting: false,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Medication Scheduled Synced Successfuly !");
+        location.reload();
+    } catch (e) { alert("Error:" + e.message); }
+ }
+    
 </script>
 </body>
 </html>
