@@ -31,6 +31,8 @@
 
     <label>3. Time to Take</label>
     <input type="time" id="med-time">
+    <label>Dose Label</label>
+<input type="text" id="med-label" placeholder="e.g. Morning Dose / جرعة الصباح">
 
     <label>4. Instructions</label>
     <input type="text" id="med-note" placeholder="e.g. Take 1 pill after breakfast">
@@ -83,6 +85,7 @@
     async function saveMed() {
         const name = document.getElementById('med-name').value;
         const time = document.getElementById('med-time').value;
+        const label = document.getElementById('med-label').value;
         const note = document.getElementById('med-note').value;
         const rawPhoto = document.getElementById('photo-preview').src;
 const photo = await compressImage(rawPhoto);
