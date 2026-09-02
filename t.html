@@ -91,15 +91,30 @@
     }
 
     function checkTime() {
-        const now = new Date();
-        const currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    const now = new Date();
+    const currentTime = now.getHours().toString().padStart(2, '0') + ":" + 
+                        now.getMinutes().toString().padStart(2, '0');
+    
+    const todayDate = now.toISOString().split('T')[0];
+    const todayDay = now.getDay(); // Sunday is 0, Monday is 1...
+
+    meds.forEach(m => {
+        // 1. Is the time right?
+        const isTimeMatch = (m.time === currentTime);
         
-        meds.forEach(m => {
-            if(m.time === currentTime && !m.isAlerting) {
-                m.isAlerting = true;
-                triggerAlert(m);
-            }
-        });
+        // 2. Is today one of the allowed days for this med?
+        const isDayMatch = m.days && m.days.includes(todayDay);
+        
+        // 3. Is the date within the Start/End range?
+        let isDateValid = true;
+        if(m.startDate && todayDate < m.startDate) isDateValid = false;
+        if(m.endDate && todayDate > m.endDate) isDateValid = false;
+
+        if (isTimeMatch && isDayMatch && isDateValid && !m.isAlerting) {
+            m.isAlerting = true;
+            triggerAlert(m);
+        }
+    });
     }
 
     function triggerAlert(m) {
