@@ -13,6 +13,25 @@
         #alert { display: none; height: 100vh; background: white; color: #000; padding: 20px; }
         #med-img { width: 100%; height: 300px; object-fit: cover; border-radius: 15px; display: block; margin: 10px auto; }
         .btn-stop { background: #d63031; color: white; padding: 30px; border-radius: 20px; width: 100%; font-size: 2rem; border: none; font-weight: 900; }
+        .med-card-small {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.med-card-small img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+.med-details h3 { margin: 0; font-size: 1.1rem; color: #1a2b48; }
+.med-details p { margin: 2px 0; font-size: 0.85rem; color: #666; }
+.delete-btn { margin-left: auto; color: #d63031; font-size: 1.2rem; background: none; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -30,6 +49,13 @@
         <h2 id="med-info" style="font-size: 1.5rem;"></h2>
         <button class="btn-stop" onclick="stopAlert()">I TOOK IT / تم الأخذ</button>
     </div>
+    <!-- PATIENT FILE SECTION -->
+<div id="patient-file" style="display: none; padding: 20px; background: #f9f9f9; color: #333; min-height: 100vh; text-align: left;">
+    <button onclick="closeFile()" style="background: #eee; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 700; margin-bottom: 20px;">← BACK</button>
+    <h1 style="margin: 0 0 20px 0; color: #1a2b48;">My Medication File</h1>
+    <div id="med-list-container"
+    </div>
+</div>
 
 <script>
     const firebaseConfig = {
@@ -99,6 +125,50 @@
         const msg = new SpeechSynthesisUtterance(t);
         msg.rate = 0.7;
         window.speechSynthesis.speak(msg);
+        function openFile() {
+    document.getElementById('waiting').style.display = 'none';
+    document.getElementById('patient-file').style.display = 'block';
+    renderMedList();
+}
+
+function closeFile() {
+    document.getElementById('patient-file').style.display = 'none';
+    document.getElementById('waiting').style.display = 'flex';
+}
+
+function renderMedList() {
+    const container = document.getElementById('med-list-container');
+    container.innerHTML = ""; // Clear current list
+
+    if (meds.length === 0) {
+        container.innerHTML = "<p>No medications found in your file.</p>";
+        return;
+    }
+
+    meds.forEach((m, index) => {
+        container.innerHTML += `
+            <div class="med-card-small">
+                <img src="${m.photo}" alt="pill">
+                <div class="med-details">
+                    <h3>${m.name}</h3>
+                    <p><strong>Time:</strong> ${m.time}</p>
+                    <p><strong>Note:</strong> ${m.note}</p>
+                </div>
+                <button class="delete-btn" onclick="deleteMed('${index}')">🗑️</button>
+            </div>
+        `;
+    });
+}
+
+async function deleteMed(index) {
+    if(confirm("Are you sure you want to remove this medication from the file?")) {
+        // 1. Remove from local array
+        const medToDelete = meds[index];
+        meds.splice(index, 1);
+        renderMedList();
+        alert("Medication removed.");
+    }
+}
     }
 </script>
 </body>
