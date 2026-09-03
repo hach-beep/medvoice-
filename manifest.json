@@ -1,7 +1,7 @@
 {
   "name": "MedVoice Pro",
   "short_name": "MedVoice",
-  "start_url": "h.html",
+  "start_url": "Nurse.html",
   "display": "standalone",
   "background_color": "#1a2b48",
   "theme_color": "#1a2b48",
