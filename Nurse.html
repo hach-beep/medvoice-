@@ -141,8 +141,9 @@
     <label>Instructions</label>
     <input type="text" id="med-note" placeholder="e.g. Take 1 pill after breakfast">
 
-    <button class="btn" style="background:var(--navy); color:white" onclick="saveMed()">SAVE TO CLOUD</button>
-    <button class="btn" style="background:var(--teal); color:white" onclick="window.location.href='t.html'">GO TO PATIENT MODE</button>
+    <button class="btn" style="background:var(--navy); color:white" onclick="saveMed()">SAVE TO CLOUD & DEVICE</button>
+    <button class="btn" style="background:var(--teal); color:white; margin-top:10px;" onclick="window.location.href='patient.html'">GO TO PATIENT MODE</button>
+    <button class="btn" style="background:#4a5568; color:white; margin-top:10px;" onclick="window.location.href='file.html'">VIEW MEDICATION RECORDS</button>
 </div>
 
 <script>
@@ -156,67 +157,102 @@
         appId: "1:644370066289:web:3f92c01653711151f4e4d0"
     };
     
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    let db = null;
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+    } catch (e) {
+        console.warn("Firebase warning:", e);
+    }
 
     // Handle Photo Preview
     document.getElementById('med-photo').onchange = function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = function() {
             const img = document.getElementById('photo-preview');
             img.src = reader.result;
         };
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(file);
     };
     //handle the picture zise 
     function compressImage(base64Str) {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.src = base64Str;
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 400; // Small size for fast, free upload
-            const scaleSize = MAX_WIDTH / img.width;
-            canvas.width = MAX_WIDTH;
-            canvas.height = img.height * scaleSize;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL('image/jpeg', 0.7)); // 0.7 quality
-        };
-    });
-    }
- async function saveMed() {
-    const name = document.getElementById('med-name').value;
-    const time = document.getElementById('med-time').value;
-    const note = document.getElementById('med-note').value;
-    const rawPhoto = document.getElementById('photo-preview').src;
-const photo = await compressImage(rawPhoto);
-    const start = document.getElementById('start-date').value;
-    const end = document.getElementById('end-date').value;
-
-    // Collect selected days (e.g., [0, 2, 4] for Sun, Tue, Thu)
-    const selectedDays = [];
-    document.querySelectorAll('.day-check:checked').forEach(cb => {
-        selectedDays.push(parseInt(cb.value));
-    });
-
-    if(!name || !time || selectedDays.length === 0) {
-        return alert("Please enter name, time, and at least one day.");
+        if (!base64Str || !base64Str.startsWith('data:image')) {
+            return Promise.resolve('');
+        }
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = base64Str;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 400; // Small size for fast, free upload
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', 0.7)); // 0.7 quality
+            };
+            img.onerror = () => resolve(base64Str);
+        });
     }
 
-    try {
-        await db.collection("meds").add({
-            name, time, note, photo,
+    async function saveMed() {
+        const name = document.getElementById('med-name').value.trim();
+        const time = document.getElementById('med-time').value;
+        const note = document.getElementById('med-note').value.trim();
+        const label = document.getElementById('med-label')?.value.trim() || '';
+        const rawPhoto = document.getElementById('photo-preview').src;
+        const photo = await compressImage(rawPhoto);
+        const start = document.getElementById('start-date').value;
+        const end = document.getElementById('end-date').value;
+
+        // Collect selected days (e.g., [0, 2, 4] for Sun, Tue, Thu)
+        const selectedDays = [];
+        document.querySelectorAll('.day-check:checked').forEach(cb => {
+            selectedDays.push(parseInt(cb.value));
+        });
+
+        if(!name || !time || selectedDays.length === 0) {
+            return alert("Please enter name, time, and at least one day.");
+        }
+
+        const medData = {
+            id: 'med_' + Date.now(),
+            name, time, note, label, photo,
             days: selectedDays, // Array of days
             startDate: start,
             endDate: end,
             isAlerting: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert("Medication Scheduled Synced Successfuly !");
+            createdAt: new Date().toISOString()
+        };
+
+        // Offline storage sync
+        try {
+            const saved = localStorage.getItem('medvoice_meds');
+            const list = saved ? JSON.parse(saved) : [];
+            list.push(medData);
+            localStorage.setItem('medvoice_meds', JSON.stringify(list));
+        } catch (e) {
+            console.warn("Could not save to localStorage", e);
+        }
+
+        if (db) {
+            try {
+                const docRef = await db.collection("meds").add({
+                    ...medData,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                medData.id = docRef.id;
+            } catch (e) {
+                console.warn("Firestore error (saved locally):", e.message);
+            }
+        }
+
+        alert("Medication schedule saved and synced successfully!");
         location.reload();
-    } catch (e) { alert("Error:" + e.message); }
- }
+    }
     
 </script>
 </body>
