@@ -1,0 +1,182 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice | Patient Mode</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; text-align: center; }
+        #waiting { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+        #alert { display: none; min-height: 100vh; background: white; color: #000; padding: 20px; box-sizing: border-box; }
+        #med-img { width: 100%; max-width: 450px; height: 300px; object-fit: cover; border-radius: 15px; display: block; margin: 15px auto; border: 2px solid #edf2f7; }
+        .btn-stop { background: #d63031; color: white; padding: 25px 30px; border-radius: 20px; width: 100%; max-width: 450px; font-size: 1.8rem; border: none; font-weight: 900; cursor: pointer; }
+        .btn-action { padding: 16px 36px; border-radius: 50px; border: none; background: #2a9d8f; color: white; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: transform 0.1s; }
+        .btn-action:active { transform: scale(0.97); }
+        .nav-link { background: none; border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 24px; border-radius: 50px; cursor: pointer; text-decoration: none; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+    <div id="waiting">
+        <div style="font-size: 5rem; margin-bottom: 15px;">🎙️</div>
+        <h1 style="font-size: 2.2rem; margin: 0 0 10px 0;">MedVoice Active</h1>
+        <p id="status-text" style="font-size: 1.1rem; color: #ccc; max-width: 400px; margin: 0 auto 25px auto;">Tap the button below to start monitoring your medications.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 14px; align-items: center; width: 100%; max-width: 340px;">
+            <button onclick="start()" id="start-btn" class="btn-action">START MONITORING</button>
+            <a href="file.html" class="nav-link">VIEW MY MEDICATIONS / عرض الأدوية</a>
+            <a href="Nurse.html" class="nav-link" style="border-color: rgba(255,255,255,0.2); color: #888;">← NURSE PORTAL</a>
+        </div>
+    </div>
+
+    <div id="alert">
+        <h1 style="font-size: 2.2rem; color: #d63031; margin-top: 10px;">TIME FOR MEDICINE!</h1>
+        <img id="med-img" src="" alt="Medication Photo">
+        <h2 id="med-info" style="font-size: 1.4rem; color: #1a2b48; margin: 15px 0;"></h2>
+        <button class="btn-stop" onclick="stopAlert()">I TOOK IT / تم الأخذ</button>
+    </div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyASth7cdm0Pr2wvORbyXwQ19LkSNoJMR0E",
+        authDomain: "medvoice-8d2e0.firebaseapp.com",
+        projectId: "medvoice-8d2e0",
+        storageBucket: "medvoice-8d2e0.firebasestorage.app",
+        messagingSenderId: "644370066289",
+        appId: "1:644370066289:web:3f92c01653711151f4e4d0"
+    };
+
+    let db = null;
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+    } catch (e) {
+        console.warn("Firebase initialization warning:", e);
+    }
+
+    let meds = [];
+    let alertInterval;
+    let wakeLock = null;
+
+    // Load from local storage for offline resilience
+    function loadLocalMeds() {
+        try {
+            const saved = localStorage.getItem('medvoice_meds');
+            if (saved) meds = JSON.parse(saved);
+        } catch (e) {
+            console.warn("Could not load local meds", e);
+        }
+    }
+    loadLocalMeds();
+
+    // Prevent screen sleep
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log('Wake Lock Active');
+            }
+        } catch (err) {
+            console.log('Wake Lock Error: ' + err.message);
+        }
+    }
+
+    // Silent Heartbeat to prevent app from sleeping
+    const silentAudio = new Audio("https://raw.githubusercontent.com/anars/blank-audio/master/10-seconds-of-silence.mp3");
+    silentAudio.loop = true;
+
+    function start() {
+        requestWakeLock();
+        try {
+            silentAudio.play().catch(e => console.log("Audio play blocked until user gesture"));
+        } catch (e) {}
+
+        document.getElementById('start-btn').style.display = "none";
+        document.getElementById('status-text').innerText = "System active. Monitoring schedule in real-time...";
+        speak("System active. I will remind you when it is time for your medicine.");
+
+        if (db) {
+            db.collection("meds").onSnapshot((snapshot) => {
+                meds = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    meds.push(data);
+                });
+                try {
+                    localStorage.setItem('medvoice_meds', JSON.stringify(meds));
+                } catch (e) {}
+                console.log("Meds updated from cloud:", meds.length);
+            }, (err) => {
+                console.warn("Firestore listener error, using local medications:", err.message);
+                loadLocalMeds();
+            });
+        }
+
+        setInterval(checkTime, 10000);
+    }
+
+    function checkTime() {
+        const now = new Date();
+        const currentTime = now.getHours().toString().padStart(2, '0') + ":" + 
+                            now.getMinutes().toString().padStart(2, '0');
+        
+        const todayDate = now.toISOString().split('T')[0];
+        const todayDay = now.getDay(); // 0 is Sun, 1 is Mon...
+
+        meds.forEach(m => {
+            const isTimeMatch = (m.time === currentTime);
+            const isDayMatch = !m.days || m.days.length === 0 || m.days.includes(todayDay);
+            
+            let isDateValid = true;
+            if (m.startDate && todayDate < m.startDate) isDateValid = false;
+            if (m.endDate && todayDate > m.endDate) isDateValid = false;
+
+            if (isTimeMatch && isDayMatch && isDateValid && !m.isAlerting) {
+                m.isAlerting = true;
+                triggerAlert(m);
+            }
+        });
+    }
+
+    function triggerAlert(m) {
+        const alertScreen = document.getElementById('alert');
+        const medImg = document.getElementById('med-img');
+        const medInfo = document.getElementById('med-info');
+
+        medImg.src = m.photo || 'https://cdn-icons-png.flaticon.com/512/3028/3028549.png';
+        medInfo.innerText = m.name + (m.label ? " (" + m.label + ")" : "") + " — " + (m.note || "Please take your dose.");
+        
+        alertScreen.style.display = "block";
+        document.getElementById('waiting').style.display = "none";
+
+        speak(`Attention. It is time for your ${m.name}. ${m.note || ''}`);
+        alertInterval = setInterval(() => {
+            speak(`It is time for your ${m.name}. ${m.note || ''}`);
+        }, 6000);
+    }
+
+    function stopAlert() {
+        clearInterval(alertInterval);
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        document.getElementById('alert').style.display = "none";
+        document.getElementById('waiting').style.display = "flex";
+    }
+
+    function speak(t) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(t);
+            msg.rate = 0.75;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+</script>
+</body>
+</html>
