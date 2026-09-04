@@ -1,0 +1,11 @@
+{
+  "name": "MedVoice",
+  "description": "Visual and audio intelligence medication assistant for elderly and low-literacy patients.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
