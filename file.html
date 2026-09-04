@@ -10,8 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background: #f9f9f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; }
         .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-        .back-btn { background: #1a2b48; color: white; padding: 10px 20px; border-radius: 10px; border: none; font-weight: 700; text-decoration: none; cursor: pointer; }
+        .back-btn { background: #1a2b48; color: white; padding: 10px 18px; border-radius: 10px; border: none; font-weight: 700; text-decoration: none; cursor: pointer; font-size: 0.9rem; }
         
         .med-card-small {
             background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px;
@@ -21,22 +22,24 @@
         .med-details { flex-grow: 1; }
         .med-details h3 { margin: 0; color: #1a2b48; font-size: 1.1rem; }
         .med-details p { margin: 3px 0; font-size: 0.85rem; color: #666; }
-        .delete-btn { color: #d63031; font-size: 1.5rem; background: none; border: none; cursor: pointer; padding: 10px; }
+        .delete-btn { color: #d63031; font-size: 1.4rem; background: none; border: none; cursor: pointer; padding: 8px; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <a href="patient.html" class="back-btn">← BACK</a>
-    <h2 style="margin:0;">My Medicines</h2>
-</div>
+<div class="container">
+    <div class="header">
+        <a href="patient.html" class="back-btn">← PATIENT</a>
+        <h2 style="margin:0; color:#1a2b48;">My Medicines</h2>
+        <a href="Nurse.html" class="back-btn" style="background:#2a9d8f;">+ SETUP</a>
+    </div>
 
-<div id="med-list-container">
-    <p>Loading your medical file...</p>
+    <div id="med-list-container">
+        <p>Loading your medical file...</p>
+    </div>
 </div>
 
 <script>
-    // YOUR REAL FIREBASE CONFIG
     const firebaseConfig = {
       apiKey: "AIzaSyASth7cdm0Pr2wvORbyXwQ19LkSNoJMR0E",
       authDomain: "medvoice-8d2e0.firebaseapp.com",
@@ -45,46 +48,84 @@
       messagingSenderId: "644370066289",
       appId: "1:644370066289:web:3f92c01653711151f4e4d0"
     };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
 
-    // 1. Fetch data from Cloud
-    db.collection("meds").onSnapshot((snapshot) => {
+    let db = null;
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+    } catch (e) {
+        console.warn("Firebase initialization warning:", e);
+    }
+
+    function renderCards(list) {
         const container = document.getElementById('med-list-container');
-        container.innerHTML = ""; // Clear loader
+        container.innerHTML = "";
 
-        if (snapshot.empty) {
-            container.innerHTML = "<p>No medications found in your file.</p>";
+        if (!list || list.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#888; padding:30px 0;'>No medications found in your file.<br><br><a href='Nurse.html' style='color:#2a9d8f; font-weight:700;'>Add a medication here</a></p>";
             return;
         }
 
-        snapshot.forEach((doc) => {
-            const m = doc.data();
-            const docId = doc.id;
-            
+        list.forEach((m, idx) => {
+            const id = m.id || idx;
+            const imgSrc = m.photo || 'https://cdn-icons-png.flaticon.com/512/3028/3028549.png';
             container.innerHTML += `
                 <div class="med-card-small">
-                    <img src="${m.photo}" alt="med-pic">
+                    <img src="${imgSrc}" alt="${m.name || 'Medication'}">
                     <div class="med-details">
-                        <h3>${m.name}</h3>
-                        <p><strong>🕒 Time:</strong> ${m.time}</p>
-                        <p><strong>📝 Note:</strong> ${m.note}</p>
+                        <h3>${m.name || 'Medication'}</h3>
+                        <p><strong>🕒 Time:</strong> ${m.time || 'N/A'}</p>
+                        ${m.label ? `<p><strong>🏷️ Label:</strong> ${m.label}</p>` : ''}
+                        <p><strong>📝 Note:</strong> ${m.note || 'No instructions'}</p>
                     </div>
-                    <button class="delete-btn" onclick="deleteEntry('${docId}')">🗑️</button>
+                    <button class="delete-btn" onclick="deleteEntry('${id}', ${idx})" title="Remove">🗑️</button>
                 </div>
             `;
         });
-    });
+    }
 
-    // 2. Delete data from Cloud
-    async function deleteEntry(id) {
-        if(confirm("Do you want to remove this drug from your file?")) {
-            try {
-                await db.collection("meds").doc(id).delete();
-                alert("Medication removed successfully.");
-            } catch (e) {
-                alert("Error removing: " + e.message);
+    function getLocalMeds() {
+        try {
+            const local = localStorage.getItem('medvoice_meds');
+            return local ? JSON.parse(local) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    if (db) {
+        db.collection("meds").onSnapshot((snapshot) => {
+            const meds = [];
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                data.id = doc.id;
+                meds.push(data);
+            });
+            localStorage.setItem('medvoice_meds', JSON.stringify(meds));
+            renderCards(meds);
+        }, (err) => {
+            console.warn("Firestore listener error, using local medications:", err.message);
+            renderCards(getLocalMeds());
+        });
+    } else {
+        renderCards(getLocalMeds());
+    }
+
+    async function deleteEntry(id, index) {
+        if (confirm("Do you want to remove this medication from your file?")) {
+            // Remove from local storage
+            const localMeds = getLocalMeds();
+            const filtered = localMeds.filter((m, i) => (m.id && m.id !== id) || (!m.id && i !== index));
+            localStorage.setItem('medvoice_meds', JSON.stringify(filtered));
+
+            if (db && typeof id === 'string' && id.length > 5) {
+                try {
+                    await db.collection("meds").doc(id).delete();
+                } catch (e) {
+                    console.warn("Could not delete from Firestore:", e.message);
+                }
             }
+            renderCards(filtered);
         }
     }
 </script>
