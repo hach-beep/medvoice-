@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice</title>
+    <meta name="description" content="Visual and audio intelligence medication assistant for elderly and low-literacy patients.">
+    <meta property="og:title" content="MedVoice">
+    <meta property="og:description" content="Visual and audio intelligence medication assistant for elderly and low-literacy patients.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2b48;
+            --teal: #2a9d8f;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --text: #2d3436;
+            --muted: #636e72;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text);
+            margin: 0;
+            padding: 24px 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portal-card {
+            background: var(--white);
+            max-width: 480px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: 0 10px 30px rgba(26, 43, 72, 0.07);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: #eef7f6;
+            color: var(--teal);
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            color: var(--navy);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0 0 28px 0;
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .portal-btn {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: left;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .portal-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-nurse {
+            background: var(--navy);
+            box-shadow: 0 6px 16px rgba(26, 43, 72, 0.2);
+        }
+
+        .btn-patient {
+            background: var(--teal);
+            box-shadow: 0 6px 16px rgba(42, 157, 143, 0.25);
+        }
+
+        .btn-records {
+            background: #ffffff;
+            color: var(--navy);
+            border: 2px solid #edf2f7;
+        }
+
+        .btn-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .btn-text h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .btn-text p {
+            margin: 2px 0 0 0;
+            font-size: 0.8rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+
+<main class="portal-card" id="main-portal">
+    <div class="logo-badge" id="app-logo">💊</div>
+    <h1 id="app-title">MedVoice</h1>
+    <p class="subtitle" id="app-subtitle">Visual & Audio Intelligence Medication Assistant for Elderly & Low-Literacy Patients</p>
+
+    <div class="action-list" id="portal-actions">
+        <a href="Nurse.html" class="portal-btn btn-nurse" id="btn-nurse-portal">
+            <span class="btn-icon">🩺</span>
+            <div class="btn-text">
+                <h3>Nurse & Clinician Portal</h3>
+                <p>Schedule doses, capture pill photos & set times</p>
+            </div>
+        </a>
+
+        <a href="patient.html" class="portal-btn btn-patient" id="btn-patient-mode">
+            <span class="btn-icon">🗣️</span>
+            <div class="btn-text">
+                <h3>Patient Mode (Active Monitoring)</h3>
+                <p>Spoken audio alerts & visual pill recognition</p>
+            </div>
+        </a>
+
+        <a href="file.html" class="portal-btn btn-records" id="btn-patient-records">
+            <span class="btn-icon">📋</span>
+            <div class="btn-text">
+                <h3 style="color:var(--navy);">My Medication Records</h3>
+                <p style="color:var(--muted);">View scheduled prescriptions & instructions</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer-note" id="app-footer">
+        Clinical Safety First • Real-time Cloud Sync & Offline Resilience
+    </div>
+</main>
+
+</body>
+</html>
